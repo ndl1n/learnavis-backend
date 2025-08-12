@@ -1,0 +1,9 @@
+# .gitignore
+
+# 忽略所有 .env 檔案
+.env
+*.env
+
+# 忽略 Python 快取檔案
+__pycache__/
+*.pyc
