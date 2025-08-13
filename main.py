@@ -1,5 +1,3 @@
-# backend/main.py
-
 from fastapi import FastAPI
 from api.v1 import auth # 匯入 auth 路由模組
 
