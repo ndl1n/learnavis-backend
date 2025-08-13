@@ -1,5 +1,3 @@
-# backend/models/user.py
-
 from sqlalchemy import Column, Integer, String, Boolean, DateTime
 from sqlalchemy.sql import func
 from core.database import Base # 假設您的 Base 在 core/database.py 中定義
