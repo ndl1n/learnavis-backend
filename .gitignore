@@ -1,9 +1,42 @@
-# .gitignore
-
-# 忽略所有 .env 檔案
+# Environment variables
+# 忽略所有 .env 檔案，絕不將密碼提交到版本控制
 .env
 *.env
 
-# 忽略 Python 快取檔案
+# Python cache and artifacts
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
+.Python
+
+# Virtual Environments
+# 如果您在本地端開發時有使用 venv
+venv/
+env/
+.venv/
+include/
+lib/
+bin/
+
+# IDE and Editor specific files
+.idea/
+.vscode/
+*.swp
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Docker-related files (if any)
+# 通常 Dockerfile 和 docker-compose.yml 會被控管，但有些本地快取可以忽略
+.dockerignore
+
+# Test artifacts
+.pytest_cache/
+.coverage
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
