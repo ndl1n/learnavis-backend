@@ -7,12 +7,10 @@ from repositories.user_repo import user_repo, UserRepository
 from schemas.user_schema import UserCreate, User
 from core.security import verify_password, create_access_token
 from core.config import settings
-from core.database import get_db # 假設您有 get_db 的 dependency
+from core.database import get_db # 假設有 get_db 的 dependency
 
 class AuthService:
-    def __init__(self, user_repo: UserRepository = Depends()):
-        # 這裡的 Depends() 實際上不會執行，只是為了類型提示
-        # 真正的依賴注入會在 API 層完成
+    def __init__(self, user_repo: UserRepository):
         self.user_repo = user_repo
 
     def register_user(self, db: Session, user_in: UserCreate) -> User:
@@ -40,7 +38,9 @@ class AuthService:
         
         access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
         access_token = create_access_token(
-            data={"sub": user.email}, expires_delta=access_token_expires
+            data={"sub": str(user.id), "email": user.email},
+            expires_delta=access_token_expires,
         )
+
         
-        return {"access_token": access_token, "token_type": "bearer"}
+        return {"access_token": access_token, "token_type": "Bearer"}
