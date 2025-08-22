@@ -25,10 +25,26 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None) -> s
         # 預設 15 分鐘過期
         expire = datetime.now(timezone.utc) + timedelta(minutes=15)
     
-    to_encode.update({"exp": expire})
+    to_encode.update({
+        "exp": expire,
+        "iat": datetime.now(timezone.utc)  # 簽發時間
+    })
+    
     encoded_jwt = jwt.encode(
         to_encode, 
         settings.SECRET_KEY, 
         algorithm=settings.ALGORITHM
     )
     return encoded_jwt
+
+def decode_access_token(token: str) -> dict:
+    """驗證與解析 JWT Token"""
+    try:
+        payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
+        return payload
+    except JWTError:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid or expired token",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
