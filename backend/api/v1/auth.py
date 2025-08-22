@@ -43,3 +43,7 @@ def login_for_access_token(
     """
     token_data = auth_service.login_for_access_token(db=db, form_data=form_data)
     return token_data
+
+@router.get("/me", response_model=User)
+def read_users_me(current_user: User = Depends(get_current_user)):
+    return current_user
