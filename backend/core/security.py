@@ -1,7 +1,8 @@
 from datetime import datetime, timedelta, timezone
 from passlib.context import CryptContext
 from jose import JWTError, jwt
-from core.config import settings # 稍後會建立這個檔案
+from fastapi import HTTPException, status
+from core.config import settings 
 
 # 1. 密碼雜湊設定
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
