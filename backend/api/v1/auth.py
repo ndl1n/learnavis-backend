@@ -1,13 +1,16 @@
 from fastapi import APIRouter, Depends, status
-from fastapi.security import OAuth2PasswordRequestForm
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 
 from schemas.user_schema import User, UserCreate, Token
 from services.auth_service import AuthService
 from repositories.user_repo import user_repo, UserRepository
 from core.database import get_db
+from core.dependencies import get_current_user
 
 router = APIRouter()
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/token")
 
 # 依賴注入 AuthService
 def get_auth_service(user_repo: UserRepository = Depends(lambda: user_repo)):
@@ -26,7 +29,7 @@ def register(
     """
     new_user = auth_service.register_user(db=db, user_in=user_in)
     
-    return User.model_validate(new_user)
+    return User.model_validate(new_user, from_attributes=True)
 
 
 @router.post("/token", response_model=Token)
